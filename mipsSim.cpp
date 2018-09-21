@@ -17,36 +17,32 @@ using namespace std;
 //rd: 5 bits
 //shift: 5 bits
 //funct: 6 bits
+unsigned int mar,
+			 mdr,
+			 pc,
+ 			 ir,
+ 			 rd,
+ 			 rs,
+ 			 rt,
+ 			 shift,
+			 funct,
+			 numUnTakenBranches = 0,
+			 numAlu = 0,
+			 numInstFetch = 0,
+			 numLoads = 0,
+			 numStores = 0,
 
-unsigned int mar;
-unsigned int mdr;
-unsigned int pc;
-unsigned int ir;
-unsigned int rd;
-unsigned int rs;
-unsigned int rt;
-unsigned int shift;
-int sign_ext;
-unsigned int funct;
-int ram[1024];
+			 numJumps = 0,
+			 numJumpsAndLinks = 0,
+			 numTakenBranches = 0,
+			 numUnTakenBranches = 0,
+
+int 	     sign_ext,
+ 			 ram[1024];
 
 
 map<unsigned int, string> opcodeMap;
 
-
-
-
-
-unsigned int numAlu = 0;
-
-unsigned int numInstFetch = 0;
-unsigned int numLoads = 0;
-unsigned int numStores = 0;
-
-unsigned int numJumps = 0;
-unsigned int numJumpsAndLinks = 0;
-unsigned int numTakenBranches = 0;
-unsigned int numUnTakenBranches = 0;
 
 
 void fillMap()
@@ -74,15 +70,24 @@ void addiu()
   //  cout << pc << ": addu - r[" << rt << "] now contains " << std::hex << ram[rt] << std:dec << endl;
 }
 
+//Performs bitwise AND operation rs*rt, then stores in rd
+void _and(){
+	ram[rd] = ram[rs]&ram[rt];
+	numLoads+=2;
+	numStores++;
 void hlt()
 {
   return;
 }
 
+void beq(){
+	if(r[rs]==r[rt])
+		pc += sign_ext;
+}
 
-
-
-
+void bgtz(){
+	if(r[rs]>0) pc+=sign_ext;
+}
 
 void fetch()
 {
@@ -164,8 +169,6 @@ void ( *decode() )()
     return hlt;
   }
 }
-
-
 
 int main()
 {
