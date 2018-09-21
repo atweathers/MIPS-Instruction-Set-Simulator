@@ -1,13 +1,17 @@
 #include <fstream>
 using namespace std;
 
+// Authors: Andrew Weathers and Nicholas Muenchen
+// Date: 21 September 2018
+// Purpose: Simulate a simplified MIPS-like
+//			instruction set 
 
 //opcode: 6 bits
 //rs: 5 bits
 //rt: 5 bits
 //rd: 5 bits
 //shift: 5 bits
-//funct: 5 bits
+//funct: 6 bits
 
 int mar;
 int pc;
