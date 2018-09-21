@@ -3,6 +3,7 @@
 #include <ios>
 #include <iostream>
 #include <string>
+#include <iomanip>
 using namespace std;
 
 // Authors: Andrew Weathers and Nicholas Muenchen
@@ -61,7 +62,7 @@ void addu()
   ram[rd] = ram[rs] + ram[rt];
   numLoads+=2;
   numStores++;
-  cout << pc << ": addu - r[" << rd << "] now contains " << std::hex << ram[rd] << endl;
+  cout << setw(8) << pc << ": addu - r[" << rd << "] now contains " << setbase(16) << ram[rd] << endl;
 }
 
 //Adds the number in rs to the immediately given value, then stores in rt
@@ -140,7 +141,7 @@ void (*other_func())()
 
 //Right shift by 26 to isolate the opcode
 
-void (*decode())()
+void ( *decode() )()
 {
   unsigned int opcode = (ir >> 26) & 0x3f; // clamp to 6-bit opcode field
   cout << opcode << " fff" << endl;
@@ -174,7 +175,7 @@ int main()
   ram[3] = 4;
   ram[1] = 2;
   fillMap();
-  void (* inst);
+  void (* inst)();
   inst = decode();
   (*inst)();
 
