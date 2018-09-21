@@ -5,6 +5,10 @@
 #include <string>
 using namespace std;
 
+// Authors: Andrew Weathers and Nicholas Muenchen
+// Date: 21 September 2018
+// Purpose: Simulate a simplified MIPS-like
+//			instruction set
 
 //opcode: 6 bits
 //rs: 5 bits
