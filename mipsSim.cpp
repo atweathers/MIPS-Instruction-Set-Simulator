@@ -1,4 +1,5 @@
 #include <fstream>
+#include <iostream>
 using namespace std;
 
 // Authors: Andrew Weathers and Nicholas Muenchen
@@ -12,28 +13,19 @@ using namespace std;
 //rd: 5 bits
 //shift: 5 bits
 //funct: 6 bits
+unsigned int mar,
+			 mdr,
+			 pc,
+ 			 ir,
+ 			 rd,
+ 			 rs,
+ 			 rt,
+ 			 shift,
+			 funct,
+			 numUnTakenBranches = 0;
 
-int mar;
-int pc;
-int ir;
-int rd;
-int rs;
-int rt;
-int sign_ext;
-int funct;
-int ram[1024];
-
-
-int numAlu = 0;
-
-int numInstFetch = 0;
-int numLoads = 0;
-int numStores = 0;
-
-int numJumps = 0;
-int numJumpsAndLinks = 0;
-int numTakenBranches = 0;
-int numUnTakenBranches = 0;
+int 	     sign_ext,
+ 			 ram[1024];
 
 //Adds the number in rs to the number in rt, then stores in rd
 void addu()
@@ -46,16 +38,26 @@ void addu()
 //Adds the number in rs to the immediately given value, then stores in rt
 void addiu()
 {
-  ram[rt] = ram[rs] + sgin_ext;
+  ram[rt] = ram[rs] + sign_ext;
   numLoads+=2;
   numStores++;
 }
 
+//Performs bitwise AND operation rs*rt, then stores in rd
+void _and(){
+	ram[rd] = ram[rs]&ram[rt];
+	numLoads+=2;
+	numStores++;
+}
 
+void beq(){
+	if(r[rs]==r[rt])
+		pc += sign_ext;
+}
 
-
-
-
+void bgtz(){
+	if(r[rs]>0) pc+=sign_ext;
+}
 
 void fetch()
 {
@@ -73,10 +75,9 @@ void (*decode())()
 
 }
 
-
-int main
+int main()
 {
-
+  _and();
   return 0;
 }
 
