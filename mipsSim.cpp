@@ -134,14 +134,75 @@ void bne()
 	{
 		numUnTakenBranches++;
 	}
-	numLoads += 2;
 }
 
+
+
+//or's register rs and register rt and places the result into rd
+void _or()
+{
+	ram[rd] = ram[rs] | ram[rt];
+	numAlu++;
+}
+
+//Shifts register rt left logically by shift and stores the result in rd
+/////////////////////////////////
+//UNSURE ABOUT THE REGISTERS TO BE USED, ALSO UNSURE ABOUT IMPLEMENTATION
+/////////////////////////////////
+void sll()
+{
+	ram[rd] = ram[rt] << shift;
+	numAlu++;
+}
+
+//If register rs < sign_ext, then set register rt to 1 else set to 0
+void slti()
+{
+	if (ram[rs] < sign_ext)
+	{
+		ram[rd] = 1;
+	}
+	else
+	{
+		ram[rd] = 0;
+	}
+	numAlu++;
+}
+
+
+//Logically shifts register rt right by shift and stores the result in rd, fills with ones or zeroes depending on sign
+/////////////////////////////////
+//UNSURE ABOUT THE REGISTERS TO BE USED, ALSO UNSURE ABOUT IMPLEMENTATION
+/////////////////////////////////
+void sra()
+{
+	ram[rd] = ram[rt] >> shift;
+	numAlu++;
+}
+
+
+//Logically shifts register rt right by shift and stores the result in rd, fills with zeroes
+/////////////////////////////////
+//UNSURE ABOUT THE REGISTERS TO BE USED
+/////////////////////////////////
+void srl()
+{
+	ram[rd] = (unsigned int )(ram[rt]) >> shift;
+	numAlu++;
+}
+
+//Subtract register rt from register rs and save the result into rd
+void subu()
+{
+	ram[rd] = ram[rs] + ram[rt];
+	numAlu++;
+}
 
 //Stores the word in r[t] at ram[ram[rs] + sign_imm
 void sw()
 {
 	ram[ram[rs] + sign_imm] = ram[rt];
+	numStores++;
 }
 
 //Exclusive or's ram[rs] and ram[rt] then stores the result in ram[rd]
