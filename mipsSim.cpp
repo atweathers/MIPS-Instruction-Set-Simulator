@@ -57,7 +57,8 @@ void addu()
   ram[rd] = ram[rs] + ram[rt];
   numLoads+=2;
   numStores++;
-  cout << pc << ": addu - r[" << rd << "] now contains " << std::hex << ram[rd] << endl;
+  numAlu++;
+  //cout << pc << ": addu - r[" << rd << "] now contains " << std::hex << ram[rd] << endl;
 }
 
 //Adds the number in rs to the immediately given value, then stores in rt
@@ -66,19 +67,26 @@ void addiu()
   ram[rt] = ram[rs] + sign_ext;
   numLoads+=1;
   numStores++;
+  numAlu++;
   //  cout << pc << ": addu - r[" << rt << "] now contains " << std::hex << ram[rt] << std:dec << endl;
 }
 
 //Performs bitwise AND operation rs*rt, then stores in rd
-void _and(){
-	ram[rd] = ram[rs]&ram[rt];
-	numLoads+=2;
+void _and()
+{
+	ram[rd] = ram[rs] & ram[rt];
+	numLoads += 2;
 	numStores++;
+	numAlu++;
+}
+
+
 void hlt()
 {
   return;
 }
 
+//Branch is rs is equal to rt. Branches to immediate value.
 void beq(){
 	if(r[rs]==r[rt])
 		pc += sign_ext;
