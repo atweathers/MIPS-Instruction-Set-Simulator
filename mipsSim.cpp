@@ -55,8 +55,6 @@ void fillMap()
 void addu()
 {
   ram[rd] = ram[rs] + ram[rt];
-  numLoads+=2;
-  numStores++;
   numAlu++;
   //cout << pc << ": addu - r[" << rd << "] now contains " << std::hex << ram[rd] << endl;
 }
@@ -65,8 +63,6 @@ void addu()
 void addiu()
 {
   ram[rt] = ram[rs] + sign_ext;
-  numLoads+=1;
-  numStores++;
   numAlu++;
   //  cout << pc << ": addu - r[" << rt << "] now contains " << std::hex << ram[rt] << std:dec << endl;
 }
@@ -75,8 +71,6 @@ void addiu()
 void _and()
 {
 	ram[rd] = ram[rs] & ram[rt];
-	numLoads += 2;
-	numStores++;
 	numAlu++;
 }
 
@@ -88,14 +82,84 @@ void hlt()
 
 //Branch is rs is equal to rt. Branches to immediate value.
 void beq(){
-	if(r[rs]==r[rt])
+	if (rams[rs] == ram[rt])
+	{
 		pc += sign_ext;
+		numTakenBranches++;
+	}
+	else
+	{
+		numUnTakenBranches++;
+	}
+
 }
 
-void bgtz(){
-	if(r[rs]>0) pc+=sign_ext;
+//Branch if r[rs] > 0 to the pc + signed immediate.
+void bgtz()
+{
+	if (int(ram[rs]) > 0)
+	{
+		pc += sign_ext;
+		numTakenBranches++;
+	}
+	else
+	{
+		numUnTakenBranches++;
+	}
 }
 
+//Branch if r[rs] <= 0 to the pc + signed immediate.
+void blez()
+{
+	if (int(ram[rs]) <= 0)
+	{
+		pc += sign_ext;
+		numTakenBranches++;
+	}
+	else
+	{
+		numUnTakenBranches++;
+	}
+}
+
+//Branch if ram[rs] is not equal to ram[rt], branch to pc + signed immediate.
+void bne()
+{
+	if (ram[rs] != ram[rt)
+	{
+		pc += sign_ext;
+		numTakenBranches++;
+	}
+	else
+	{
+		numUnTakenBranches++;
+	}
+	numLoads += 2;
+}
+
+
+//Stores the word in r[t] at ram[ram[rs] + sign_imm
+void sw()
+{
+	ram[ram[rs] + sign_imm] = ram[rt];
+}
+
+//Exclusive or's ram[rs] and ram[rt] then stores the result in ram[rd]
+void xor()
+{
+	ram[rd] = ram[rs] ^ ram[rt];
+	numAlu++;
+}
+
+
+//Exclusive or's ram[rs] with sign_ext and stores the result in ram[rt]
+void xori()
+{
+	ram[rt] = ram[rs] ^ sign_ext;
+	numAlu++;
+}
+
+//Fetches the next instruction.
 void fetch()
 {
   mar = pc;
