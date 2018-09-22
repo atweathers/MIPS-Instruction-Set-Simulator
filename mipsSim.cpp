@@ -82,7 +82,7 @@ void hlt()
 
 //Branch is rs is equal to rt. Branches to immediate value.
 void beq(){
-	if (rams[rs] == ram[rt])
+	if (ram[rs] == ram[rt])
 	{
 		pc += sign_ext;
 		numTakenBranches++;
@@ -125,7 +125,7 @@ void blez()
 //Branch if ram[rs] is not equal to ram[rt], branch to pc + signed immediate.
 void bne()
 {
-	if (ram[rs] != ram[rt)
+	if (ram[rs] != ram[rt])
 	{
 		pc += sign_ext;
 		numTakenBranches++;
@@ -201,7 +201,7 @@ void subu()
 //Stores the word in r[t] at ram[ram[rs] + sign_imm
 void sw()
 {
-	ram[ram[rs] + sign_imm] = ram[rt];
+	ram[ram[rs] + sign_ext] = ram[rt];
 	numStores++;
 }
 
@@ -310,7 +310,7 @@ int main()
   ram[3] = 4;
   ram[1] = 2;
   fillMap();
-  void (* inst);
+  void (* inst)();
   inst = decode();
   (*inst)();
 
