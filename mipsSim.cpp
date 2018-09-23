@@ -138,7 +138,57 @@ void hlt()
   return;
 }
 
+//Jump to target memory location and store index in pc. 
+void j()
+{
+	pc = sign_ext;
+}
 
+//Jump and link jumps, but also stores pc 
+// in given register.
+void jal()
+{
+
+}
+
+//Store incremented pc in rd and jump to rs. 
+//Value in rs is now stored in the pc. 
+void jalr()
+{
+	ram[rd] = pc;
+}
+
+//A given register is jumped to and 
+// is loaded in the pc
+void jr()
+{
+
+}
+
+//Shifts immediate value to the upper 16 bits with trailing 0's. 
+//The result is stored in register rt
+void lui()
+{
+
+}
+
+//Load value in rt from memory + any sign_ext which may apply
+void lw()
+{
+
+}
+
+//multiplies values in rs and rt and places the result into rd
+void mul()
+{
+
+}
+
+//nor's register rs and rt and places the result into rd
+void nor()
+{
+
+}
 
 //or's register rs and register rt and places the result into rd
 void _or()
