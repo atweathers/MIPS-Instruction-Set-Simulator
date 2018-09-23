@@ -39,7 +39,7 @@ unsigned int mar,
 
 int 	     sign_ext,
 					registerArray[32];
- 			 registerArray[1024];
+ 			 ram[1024];
 
 
 map<unsigned int, string> opcodeMap;
@@ -74,6 +74,8 @@ void _and()
 {
 	registerArray[rd] = registerArray[rs] & registerArray[rt];
 	numAlu++;
+
+//Logically shifts register rt right by shift and stores the result in rd, fills with ones or zeroes depending on s
 }
 
 
@@ -200,7 +202,11 @@ void _or()
 
 //Shifts register rt left logically by shift and stores the result in rd
 /////////////////////////////////
-//UNSURE ABOUT THE REGISTERS TO BE USED, ALSO UNSURE ABOUT IMPLEMENTATION
+
+//Logically shifts register rt right by shift and stores the result in rd, fills with ones or zeroes depending on s
+//UNSURE ABOUT THE REGISTERS TO BE USED, ALSO
+
+//Logically shifts register rt right by shift and stores the result in rd, fills with ones or zeroes depending on sUNSURE ABOUT IMPLEMENTATION
 /////////////////////////////////
 void sll()
 {
