@@ -145,13 +145,16 @@ void hlt()
 void j()
 {
 	pc = sign_ext;
+	numJumps++;
 }
 
 //Jump and link jumps, but also stores pc
 // in given register.
 void jal()
 {
-
+	registerArray[31] = pc;
+	pc = sign_ext;
+	numJumpsAndLinks++;
 }
 
 //Store incremented pc in rd and jump to rs.
@@ -159,26 +162,29 @@ void jal()
 void jalr()
 {
 	registerArray[rd] = pc;
+	pc = registerArray[rs];
+	numJumpsAndLinks;
+
 }
 
 //A given register is jumped to and
 // is loaded in the pc
 void jr()
 {
-
+	numJumps++;
 }
 
 //Shifts immediate value to the upper 16 bits with trailing 0's.
 //The result is stored in register rt
 void lui()
 {
-
+	numLoads++;
 }
 
 //Load value in rt from memory + any sign_ext which may apply
 void lw()
 {
-
+	numLoads++;
 }
 
 //multiplies values in rs and rt and places the result into rd
