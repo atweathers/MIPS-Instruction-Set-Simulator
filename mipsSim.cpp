@@ -74,6 +74,8 @@ void _and()
 {
 	registerArray[rd] = registerArray[rs] & registerArray[rt];
 	numAlu++;
+
+//Logically shifts register rt right by shift and stores the result in rd, fills with ones or zeroes depending on s
 }
 
 
@@ -143,13 +145,16 @@ void hlt()
 void j()
 {
 	pc = sign_ext;
+	numJumps++;
 }
 
 //Jump and link jumps, but also stores pc
 // in given register.
 void jal()
 {
-
+	registerArray[31] = pc;
+	pc = sign_ext;
+	numJumpsAndLinks++;
 }
 
 //Store incremented pc in rd and jump to rs.
@@ -158,7 +163,7 @@ void jalr()
 {
 	registerArray[rd] = pc;
 	pc = registerArray[rs];
-
+	numJumpsAndLinks;
 }
 
 //A given register is jumped to and
@@ -166,19 +171,20 @@ void jalr()
 void jr()
 {
 	pc = registerArray[rs];
+	numJumps++;
 }
 
 //Shifts immediate value to the upper 16 bits with trailing 0's.
 //The result is stored in register rt
 void lui()
 {
-
+	numLoads++;
 }
 
 //Load value in rt from memory + any sign_ext which may apply
 void lw()
 {
-
+	numLoads++;
 }
 
 //multiplies values in rs and rt and places the result into rd
@@ -202,7 +208,11 @@ void _or()
 
 //Shifts register rt left logically by shift and stores the result in rd
 /////////////////////////////////
-//UNSURE ABOUT THE REGISTERS TO BE USED, ALSO UNSURE ABOUT IMPLEMENTATION
+
+//Logically shifts register rt right by shift and stores the result in rd, fills with ones or zeroes depending on s
+//UNSURE ABOUT THE REGISTERS TO BE USED, ALSO
+
+//Logically shifts register rt right by shift and stores the result in rd, fills with ones or zeroes depending on sUNSURE ABOUT IMPLEMENTATION
 /////////////////////////////////
 void sll()
 {
