@@ -38,7 +38,6 @@ unsigned int mar,
 			 numUnTakenBranches = 0;
 
 int 	     sign_ext,
-					registerArray[32],
  			 ram[1024];
 
 
@@ -50,48 +49,36 @@ void fillMap()
 {
   opcodeMap[0x00] = "r";
   opcodeMap[0x09] = "i";
-	opcodeMap[0x04] = "i";
-	opcodeMap[0x07] = "i";
-	opcodeMap[0x06] = "i";
-	opcodeMap[0x05] = "i";
-	opcodeMap[0x02] = "i";
-	opcodeMap[0x03] = "i";
-	opcodeMap[0x0f] = "i";
-	opcodeMap[0x23] = "i";
-	opcodeMap[0x1c] = "r";
-	opcodeMap[0x0a] = "i";
-	opcodeMap[0x2b] = "i";
-	opcodeMap[0x0e] = "i";
 }
 
 
 //Adds the number in rs to the number in rt, then stores in rd
 void addu()
 {
-  registerArray[rd] = registerArray[rs] + registerArray[rt];
+  ram[rd] = ram[rs] + ram[rt];
   numAlu++;
-  //cout << pc << ": addu - r[" << rd << "] now contains " << std::hex << registerArray[rd] << endl;
+  //cout << pc << ": addu - r[" << rd << "] now contains " << std::hex << ram[rd] << endl;
 }
 
 //Adds the number in rs to the immediately given value, then stores in rt
 void addiu()
 {
-  registerArray[rt] = registerArray[rs] + sign_ext;
+  ram[rt] = ram[rs] + sign_ext;
   numAlu++;
-  //  cout << pc << ": addu - r[" << rt << "] now contains " << std::hex << registerArray[rt] << std:dec << endl;
+  //  cout << pc << ": addu - r[" << rt << "] now contains " << std::hex << ram[rt] << std:dec << endl;
 }
 
 //Performs bitwise AND operation rs*rt, then stores in rd
 void _and()
 {
-	registerArray[rd] = registerArray[rs] & registerArray[rt];
+	ram[rd] = ram[rs] & ram[rt];
 	numAlu++;
 }
 
 
 //Branch is rs is equal to rt. Branches to immediate value.
 void beq(){
-	if (registerArray[rs] == registerArray[rt])
+	if (ram[rs] == ram[rt])
 	{
 		pc += sign_ext;
 		numTakenBranches++;
@@ -106,7 +93,7 @@ void beq(){
 //Branch if r[rs] > 0 to the pc + signed immediate.
 void bgtz()
 {
-	if (int(registerArray[rs]) > 0)
+	if (int(ram[rs]) > 0)
 	{
 		pc += sign_ext;
 		numTakenBranches++;
@@ -120,7 +107,7 @@ void bgtz()
 //Branch if r[rs] <= 0 to the pc + signed immediate.
 void blez()
 {
-	if (int(registerArray[rs]) <= 0)
+	if (int(ram[rs]) <= 0)
 	{
 		pc += sign_ext;
 		numTakenBranches++;
@@ -131,10 +118,10 @@ void blez()
 	}
 }
 
-//Branch if registerArray[rs] is not equal to registerArray[rt], branch to pc + signed immediate.
+//Branch if ram[rs] is not equal to ram[rt], branch to pc + signed immediate.
 void bne()
 {
-	if (registerArray[rs] != registerArray[rt])
+	if (ram[rs] != ram[rt])
 	{
 		pc += sign_ext;
 		numTakenBranches++;
@@ -151,11 +138,62 @@ void hlt()
   return;
 }
 
+//Jump to target memory location and store index in pc.
+void j()
+{
+	pc = sign_ext;
+}
+
+//Jump and link jumps, but also stores pc
+// in given register.
+void jal()
+{
+
+}
+
+//Store incremented pc in rd and jump to rs.
+//Value in rs is now stored in the pc.
+void jalr()
+{
+	ram[rd] = pc;
+}
+
+//A given register is jumped to and
+// is loaded in the pc
+void jr()
+{
+
+}
+
+//Shifts immediate value to the upper 16 bits with trailing 0's.
+//The result is stored in register rt
+void lui()
+{
+
+}
+
+//Load value in rt from memory + any sign_ext which may apply
+void lw()
+{
+
+}
+
+//multiplies values in rs and rt and places the result into rd
+void mul()
+{
+
+}
+
+//nor's register rs and rt and places the result into rd
+void nor()
+{
+
+}
 
 //or's register rs and register rt and places the result into rd
 void _or()
 {
-	registerArray[rd] = registerArray[rs] | registerArray[rt];
+	ram[rd] = ram[rs] | ram[rt];
 	numAlu++;
 }
 
@@ -165,20 +203,20 @@ void _or()
 /////////////////////////////////
 void sll()
 {
-	registerArray[rd] = registerArray[rt] << shift;
+	ram[rd] = ram[rt] << shift;
 	numAlu++;
 }
 
 //If register rs < sign_ext, then set register rt to 1 else set to 0
 void slti()
 {
-	if (registerArray[rs] < sign_ext)
+	if (ram[rs] < sign_ext)
 	{
-		registerArray[rd] = 1;
+		ram[rd] = 1;
 	}
 	else
 	{
-		registerArray[rd] = 0;
+		ram[rd] = 0;
 	}
 	numAlu++;
 }
@@ -190,7 +228,7 @@ void slti()
 /////////////////////////////////
 void sra()
 {
-	registerArray[rd] = registerArray[rt] >> shift;
+	ram[rd] = ram[rt] >> shift;
 	numAlu++;
 }
 
@@ -201,36 +239,36 @@ void sra()
 /////////////////////////////////
 void srl()
 {
-	registerArray[rd] = (unsigned int )(registerArray[rt]) >> shift;
+	ram[rd] = (unsigned int )(ram[rt]) >> shift;
 	numAlu++;
 }
 
 //Subtract register rt from register rs and save the result into rd
 void subu()
 {
-	registerArray[rd] = registerArray[rs] + registerArray[rt];
+	ram[rd] = ram[rs] + ram[rt];
 	numAlu++;
 }
 
-//Stores the word in r[t] at registerArray[registerArray[rs] + sign_imm
+//Stores the word in r[t] at ram[ram[rs] + sign_imm
 void sw()
 {
-	registerArray[registerArray[rs] + sign_ext] = registerArray[rt];
+	ram[ram[rs] + sign_ext] = ram[rt];
 	numStores++;
 }
 
-//Exclusive or's registerArray[rs] and registerArray[rt] then stores the result in registerArray[rd]
+//Exclusive or's ram[rs] and ram[rt] then stores the result in ram[rd]
 void _xor()
 {
-	registerArray[rd] = registerArray[rs] ^ registerArray[rt];
+	ram[rd] = ram[rs] ^ ram[rt];
 	numAlu++;
 }
 
 
-//Exclusive or's registerArray[rs] with sign_ext and stores the result in registerArray[rt]
+//Exclusive or's ram[rs] with sign_ext and stores the result in ram[rt]
 void xori()
 {
-	registerArray[rt] = registerArray[rs] ^ sign_ext;
+	ram[rt] = ram[rs] ^ sign_ext;
 	numAlu++;
 }
 
@@ -241,7 +279,7 @@ void xori()
 void fetch()
 {
   mar = pc;
-  mdr = registerArray[mar];
+  mdr = ram[mar];
   ir = mdr;
   pc++;
   numInstFetch++;
@@ -317,51 +355,7 @@ void (*other_func())()
     {
       return addu;
     }
-		if(funct == 0x24)
-		{
-			return _and;
-		}
-		if(funct == 0x09)
-		{
-			return jalr;
-		}
-		if(funct == 0x08)
-		{
-			return jr;
-		}
-		if(funct == 0x27)
-		{
-			return nor;
-		}
-		if(funct == 0x25)
-		{
-			return _or;
-		}
-		if(funct == 0x00)
-		{
-			return sll;
-		}
-		if(funct == 0x03)
-		{
-			return sra;
-		}
-		if(funct == 0x02)
-		{
-			return srl;
-		}
-		if(funct == 0x23)
-		{
-			return subu;
-		}
-		if(funct == 0x26)
-		{
-			return _xor;
-		}
   }
-	if(opcode == 0x1c)
-	{
-		return mul;
-	}
 
 }
 
@@ -397,10 +391,10 @@ void ( *decode() )()
 int main()
 {
   ir = 2234401;
-  registerArray[0] = 1;
-  registerArray[2] = 3;
-  registerArray[3] = 4;
-  registerArray[1] = 2;
+  ram[0] = 1;
+  ram[2] = 3;
+  ram[3] = 4;
+  ram[1] = 2;
   fillMap();
   void (* inst)();
   inst = decode();
