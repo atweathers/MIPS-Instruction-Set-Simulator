@@ -38,7 +38,7 @@ unsigned int mar,
 			 numUnTakenBranches = 0;
 
 int 	     sign_ext,
-					registerArray[32];
+			 registerArray[32],
  			 ram[1024];
 
 
