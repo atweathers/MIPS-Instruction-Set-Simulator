@@ -163,14 +163,19 @@ void jalr()
 {
 	registerArray[rd] = pc;
 	pc = registerArray[rs];
+<<<<<<< HEAD
 	numJumpsAndLinks++;
 
+=======
+	numJumpsAndLinks;
+>>>>>>> 47ced1ce5110e3db20a542ea7172ca96d7010df1
 }
 
 //A given register is jumped to and
 // is loaded in the pc
 void jr()
 {
+	pc = registerArray[rs];
 	numJumps++;
 }
 
