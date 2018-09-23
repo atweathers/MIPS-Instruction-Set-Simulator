@@ -157,13 +157,15 @@ void jal()
 void jalr()
 {
 	registerArray[rd] = pc;
+	pc = registerArray[rs];
+
 }
 
 //A given register is jumped to and
 // is loaded in the pc
 void jr()
 {
-
+	pc = registerArray[rs];
 }
 
 //Shifts immediate value to the upper 16 bits with trailing 0's.
