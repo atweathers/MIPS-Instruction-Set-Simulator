@@ -275,6 +275,27 @@ void (*imm_func())()
 	{
 		return bgtz;
 	}
+	if(opcode == 0x06)
+	{
+		return blez;
+	}
+	if(opcode == 0x05)
+	{
+		return bne;
+	}
+	if(opcode == 0x02)
+	{
+		return j;
+	}
+	if(opcode == 0x03)
+	{
+		return jal;
+	}
+	if(opcode == 0x0f)
+	{
+		return lui;
+	}
+
 
 
 
