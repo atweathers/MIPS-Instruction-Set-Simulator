@@ -31,7 +31,7 @@ unsigned int mar,
 			 numInstFetch = 0,
 			 numLoads = 0,
 			 numStores = 0,
-
+			 halt = 0,
 			 numJumps = 0,
 			 numJumpsAndLinks = 0,
 			 numTakenBranches = 0,
@@ -163,7 +163,7 @@ void jalr()
 {
 	registerArray[rd] = pc;
 	pc = registerArray[rs];
-	numJumpsAndLinks;
+	numJumpsAndLinks++;
 
 }
 
@@ -190,13 +190,13 @@ void lw()
 //multiplies values in rs and rt and places the result into rd
 void mul()
 {
-
+	numAlu++;
 }
 
 //nor's register rs and rt and places the result into rd
 void nor()
 {
-
+	numAlu++;
 }
 
 //or's register rs and register rt and places the result into rd
@@ -259,14 +259,14 @@ void srl()
 //Subtract register rt from register rs and save the result into rd
 void subu()
 {
-	registerArray[rd] = registerArray[rs] + registerArray[rt];
+	registerArray[rd] = registerArray[rs] - registerArray[rt];
 	numAlu++;
 }
 
 //Stores the word in r[t] at registerArray[registerArray[rs] + sign_imm
 void sw()
 {
-	registerArray[registerArray[rs] + sign_ext] = registerArray[rt];
+	ram[registerArray[rs] + sign_ext] = registerArray[rt];
 	numStores++;
 }
 
@@ -395,6 +395,10 @@ void (*other_func())()
 void ( *decode() )()
 {
   unsigned int opcode = (ir >> 26) & 0x3f; // clamp to 6-bit opcode field
+	if(ir == 0)
+	{
+		return hlt;
+	}
   cout << opcode << " fff" << endl;
   if(opcodeMap.find(opcode) != opcodeMap.end())
   {
