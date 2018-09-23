@@ -35,7 +35,7 @@ unsigned int mar,
 			 numJumps = 0,
 			 numJumpsAndLinks = 0,
 			 numTakenBranches = 0,
-			 numUnTakenBranches = 0,
+			 numUnTakenBranches = 0;
 
 int 	     sign_ext,
  			 ram[1024];
