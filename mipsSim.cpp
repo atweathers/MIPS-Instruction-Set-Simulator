@@ -24,13 +24,13 @@ using namespace std;
 //funct: 6 bits
 unsigned int mar,
 			 mdr,
-			 pc,
  			 ir,
  			 rd,
  			 rs,
  			 rt,
  			 shift,
 			 funct,
+			 pc = 0,
 			 numAlu = 0,
 			 numInstFetch = 0,
 			 numLoads = 0,
@@ -43,7 +43,8 @@ unsigned int mar,
 			 registerArray[NUM_REGISTERS],
 			 ram[RAM_SIZE];
 
-int sign_ext,
+int 	
+			 sign_ext,
 			 ram_end = 0;
 
 
@@ -464,6 +465,8 @@ void gatherInput()
 		ram_end++;
 	}
 
+	//Echo to terminal 
+	printMemory();
 }
 
 int main()
