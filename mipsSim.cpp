@@ -3,6 +3,7 @@
 #include <ios>
 #include <iostream>
 #include <string>
+#include <iomanip>
 using namespace std;
 
 // Authors: Andrew Weathers and Nicholas Muenchen
@@ -75,11 +76,6 @@ void _and()
 }
 
 
-void hlt()
-{
-  return;
-}
-
 //Branch is rs is equal to rt. Branches to immediate value.
 void beq(){
 	if (ram[rs] == ram[rt])
@@ -134,6 +130,12 @@ void bne()
 	{
 		numUnTakenBranches++;
 	}
+}
+
+//Halts execution
+void hlt()
+{
+  return;
 }
 
 
@@ -206,7 +208,7 @@ void sw()
 }
 
 //Exclusive or's ram[rs] and ram[rt] then stores the result in ram[rd]
-void xor()
+void _xor()
 {
 	ram[rd] = ram[rs] ^ ram[rt];
 	numAlu++;
@@ -219,6 +221,9 @@ void xori()
 	ram[rt] = ram[rs] ^ sign_ext;
 	numAlu++;
 }
+
+
+
 
 //Fetches the next instruction.
 void fetch()
@@ -278,7 +283,7 @@ void (*other_func())()
 
 //Right shift by 26 to isolate the opcode
 
-void (*decode())()
+void ( *decode() )()
 {
   unsigned int opcode = (ir >> 26) & 0x3f; // clamp to 6-bit opcode field
   cout << opcode << " fff" << endl;
