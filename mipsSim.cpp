@@ -7,8 +7,9 @@
 #include <climits>
 using namespace std;
 
-#DEFINE RAM_SIZE 1024
-#DEINFE NUM_REGISTER 32
+#define RAM_SIZE 1024
+#define NUM_REGISTERS 32
+
 
 // Authors: Andrew Weathers and Nicholas Muenchen
 // Date: 21 September 2018
@@ -39,10 +40,11 @@ unsigned int mar,
 			 numJumpsAndLinks = 0,
 			 numTakenBranches = 0,
 			 numUnTakenBranches = 0,
-			 registerArray[NUM_REGISTER],
+			 registerArray[NUM_REGISTERS],
 			 ram[RAM_SIZE];
 
-int sign_ext;
+int sign_ext,
+			 ram_end = 0;
 
 
 
@@ -237,7 +239,7 @@ void sll()
 }
 
 //If register rs < sign_ext, then set register rt to 1 else set to 0
-void slti()
+void stli()
 {
 	if (registerArray[rs] < sign_ext)
 	{
@@ -436,6 +438,7 @@ void ( *decode() )()
   }
 }
 
+
 void writeOutput()
 {
 	cout << "contents of memory" << endl;
@@ -443,8 +446,23 @@ void writeOutput()
 	for(int i = 0; i < RAM_SIZE; i++)
 	{
 		if(ram[i] != UINT_MAX)
-	}
+		{
 
+		}
+
+	}
+}
+
+
+//Store terminal input into ram
+void gatherInput()
+{
+	unsigned int input;
+	int i=0;
+	while(cin >> hex >> input) {
+		ram[ram_end] = input;
+		ram_end++;
+	}
 
 }
 
