@@ -163,12 +163,8 @@ void jalr()
 {
 	registerArray[rd] = pc;
 	pc = registerArray[rs];
-<<<<<<< HEAD
 	numJumpsAndLinks++;
 
-=======
-	numJumpsAndLinks;
->>>>>>> 47ced1ce5110e3db20a542ea7172ca96d7010df1
 }
 
 //A given register is jumped to and
@@ -427,7 +423,7 @@ void ( *decode() )()
 
 int main()
 {
-  ir = 2234401;
+  while(halt == 0)
   registerArray[0] = 1;
   registerArray[2] = 3;
   registerArray[3] = 4;
