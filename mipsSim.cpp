@@ -4,7 +4,11 @@
 #include <iostream>
 #include <string>
 #include <iomanip>
+#include <climits>
 using namespace std;
+
+#DEFINE RAM_SIZE 1024
+#DEINFE NUM_REGISTER 32
 
 // Authors: Andrew Weathers and Nicholas Muenchen
 // Date: 21 September 2018
@@ -26,7 +30,6 @@ unsigned int mar,
  			 rt,
  			 shift,
 			 funct,
-			 numUnTakenBranches = 0,
 			 numAlu = 0,
 			 numInstFetch = 0,
 			 numLoads = 0,
@@ -35,15 +38,23 @@ unsigned int mar,
 			 numJumps = 0,
 			 numJumpsAndLinks = 0,
 			 numTakenBranches = 0,
-			 numUnTakenBranches = 0;
+			 numUnTakenBranches = 0,
+			 registerArray[NUM_REGISTER],
+			 ram[RAM_SIZE];
 
-int 	     sign_ext,
-			 registerArray[32],
- 			 ram[1024];
+int sign_ext;
+
 
 
 map<unsigned int, string> opcodeMap;
 
+void initiliazeRam()
+{
+	for(int i = 0; i < RAM_SIZE; i++)
+	{
+		ram[i] = UINT_MAX;
+	}
+}
 
 
 void fillMap()
@@ -423,6 +434,18 @@ void ( *decode() )()
   {
     return hlt;
   }
+}
+
+void writeOutput()
+{
+	cout << "contents of memory" << endl;
+	cout << "addr value" << endl;
+	for(int i = 0; i < RAM_SIZE; i++)
+	{
+		if(ram[i] != UINT_MAX)
+	}
+
+
 }
 
 int main()
