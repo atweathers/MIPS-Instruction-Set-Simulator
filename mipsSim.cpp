@@ -179,24 +179,28 @@ void jr()
 //The result is stored in register rt
 void lui()
 {
+	registerArray[rt] = sign_ext << 16;
 	numLoads++;
 }
 
 //Load value in rt from memory + any sign_ext which may apply
 void lw()
 {
+	registerArray[rt] = ram[rs+sign_ext];
 	numLoads++;
 }
 
 //multiplies values in rs and rt and places the result into rd
 void mul()
 {
+	registerArray[rd] = registerArray[rs]*registerArray[rt];
 	numAlu++;
 }
 
 //nor's register rs and rt and places the result into rd
 void nor()
 {
+	registerArray[rd] = !(registerArray[rs] | registerArray[rt]);
 	numAlu++;
 }
 
