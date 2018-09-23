@@ -438,8 +438,7 @@ void ( *decode() )()
   }
 }
 
-
-void writeOutput()
+void printMemory()
 {
 	cout << "contents of memory" << endl;
 	cout << "addr value" << endl;
@@ -447,10 +446,16 @@ void writeOutput()
 	{
 		if(ram[i] != UINT_MAX)
 		{
-
+			cout << setw(3) << setfill('0') << i;
+			cout << ": " << hex << ram[i] << endl;
 		}
-
 	}
+}
+
+void writeOutput()
+{
+	printMemory();
+	cout << "instruction class counts (omits hlt instruction)" << endl;
 }
 
 
@@ -459,7 +464,8 @@ void gatherInput()
 {
 	unsigned int input;
 	int i=0;
-	while(cin >> hex >> input) {
+	while(cin >> hex >> input)
+	{
 		ram[ram_end] = input;
 		ram_end++;
 	}
@@ -468,15 +474,26 @@ void gatherInput()
 
 int main()
 {
+	initiliazeRam();
+	fillMap();
+	gatherInput();
+	void (* inst)();
+
   while(halt == 0)
+	{
+		fetch();
+		inst = decode();
+		(*inst)();
+	}
+	writeOutput();
+
+
   registerArray[0] = 1;
   registerArray[2] = 3;
   registerArray[3] = 4;
   registerArray[1] = 2;
-  fillMap();
-  void (* inst)();
-  inst = decode();
-  (*inst)();
+
+
 
   return 0;
 }
