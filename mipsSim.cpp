@@ -56,39 +56,176 @@ void fillMap()
 void addu()
 {
   ram[rd] = ram[rs] + ram[rt];
-  numLoads+=2;
-  numStores++;
-  cout << setw(8) << pc << ": addu - r[" << rd << "] now contains " << setbase(16) << ram[rd] << endl;
+  numAlu++;
+  //cout << pc << ": addu - r[" << rd << "] now contains " << std::hex << ram[rd] << endl;
 }
 
 //Adds the number in rs to the immediately given value, then stores in rt
 void addiu()
 {
   ram[rt] = ram[rs] + sign_ext;
-  numLoads+=1;
-  numStores++;
+  numAlu++;
   //  cout << pc << ": addu - r[" << rt << "] now contains " << std::hex << ram[rt] << std:dec << endl;
 }
 
 //Performs bitwise AND operation rs*rt, then stores in rd
-void _and(){
-	ram[rd] = ram[rs]&ram[rt];
-	numLoads+=2;
-	numStores++;
+void _and()
+{
+	ram[rd] = ram[rs] & ram[rt];
+	numAlu++;
+}
+
+
+//Branch is rs is equal to rt. Branches to immediate value.
+void beq(){
+	if (ram[rs] == ram[rt])
+	{
+		pc += sign_ext;
+		numTakenBranches++;
+	}
+	else
+	{
+		numUnTakenBranches++;
+	}
+
+}
+
+//Branch if r[rs] > 0 to the pc + signed immediate.
+void bgtz()
+{
+	if (int(ram[rs]) > 0)
+	{
+		pc += sign_ext;
+		numTakenBranches++;
+	}
+	else
+	{
+		numUnTakenBranches++;
+	}
+}
+
+//Branch if r[rs] <= 0 to the pc + signed immediate.
+void blez()
+{
+	if (int(ram[rs]) <= 0)
+	{
+		pc += sign_ext;
+		numTakenBranches++;
+	}
+	else
+	{
+		numUnTakenBranches++;
+	}
+}
+
+//Branch if ram[rs] is not equal to ram[rt], branch to pc + signed immediate.
+void bne()
+{
+	if (ram[rs] != ram[rt])
+	{
+		pc += sign_ext;
+		numTakenBranches++;
+	}
+	else
+	{
+		numUnTakenBranches++;
+	}
+}
+
+//Halts execution
 void hlt()
 {
   return;
 }
 
-void beq(){
-	if(r[rs]==r[rt])
-		pc += sign_ext;
+
+
+//or's register rs and register rt and places the result into rd
+void _or()
+{
+	ram[rd] = ram[rs] | ram[rt];
+	numAlu++;
 }
 
-void bgtz(){
-	if(r[rs]>0) pc+=sign_ext;
+//Shifts register rt left logically by shift and stores the result in rd
+/////////////////////////////////
+//UNSURE ABOUT THE REGISTERS TO BE USED, ALSO UNSURE ABOUT IMPLEMENTATION
+/////////////////////////////////
+void sll()
+{
+	ram[rd] = ram[rt] << shift;
+	numAlu++;
 }
 
+//If register rs < sign_ext, then set register rt to 1 else set to 0
+void slti()
+{
+	if (ram[rs] < sign_ext)
+	{
+		ram[rd] = 1;
+	}
+	else
+	{
+		ram[rd] = 0;
+	}
+	numAlu++;
+}
+
+
+//Logically shifts register rt right by shift and stores the result in rd, fills with ones or zeroes depending on sign
+/////////////////////////////////
+//UNSURE ABOUT THE REGISTERS TO BE USED, ALSO UNSURE ABOUT IMPLEMENTATION
+/////////////////////////////////
+void sra()
+{
+	ram[rd] = ram[rt] >> shift;
+	numAlu++;
+}
+
+
+//Logically shifts register rt right by shift and stores the result in rd, fills with zeroes
+/////////////////////////////////
+//UNSURE ABOUT THE REGISTERS TO BE USED
+/////////////////////////////////
+void srl()
+{
+	ram[rd] = (unsigned int )(ram[rt]) >> shift;
+	numAlu++;
+}
+
+//Subtract register rt from register rs and save the result into rd
+void subu()
+{
+	ram[rd] = ram[rs] + ram[rt];
+	numAlu++;
+}
+
+//Stores the word in r[t] at ram[ram[rs] + sign_imm
+void sw()
+{
+	ram[ram[rs] + sign_ext] = ram[rt];
+	numStores++;
+}
+
+//Exclusive or's ram[rs] and ram[rt] then stores the result in ram[rd]
+void _xor()
+{
+	ram[rd] = ram[rs] ^ ram[rt];
+	numAlu++;
+}
+
+
+//Exclusive or's ram[rs] with sign_ext and stores the result in ram[rt]
+void xori()
+{
+	ram[rt] = ram[rs] ^ sign_ext;
+	numAlu++;
+}
+
+
+
+
+//Fetches the next instruction.
 void fetch()
 {
   mar = pc;
