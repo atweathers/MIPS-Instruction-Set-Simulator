@@ -4,6 +4,7 @@
 #include <iostream>
 #include <string>
 #include <iomanip>
+#include <limits.h>
 using namespace std;
 
 // Authors: Andrew Weathers and Nicholas Muenchen
@@ -26,7 +27,6 @@ unsigned int mar,
  			 rt,
  			 shift,
 			 funct,
-			 numUnTakenBranches = 0,
 			 numAlu = 0,
 			 numInstFetch = 0,
 			 numLoads = 0,
@@ -35,7 +35,8 @@ unsigned int mar,
 			 numJumps = 0,
 			 numJumpsAndLinks = 0,
 			 numTakenBranches = 0,
-			 numUnTakenBranches = 0;
+			 numUnTakenBranches = 0,
+			 ram_end = 0;
 
 int 	     sign_ext,
 			 registerArray[32],
@@ -226,7 +227,7 @@ void sll()
 }
 
 //If register rs < sign_ext, then set register rt to 1 else set to 0
-void slti()
+void stli()
 {
 	if (registerArray[rs] < sign_ext)
 	{
@@ -423,6 +424,17 @@ void ( *decode() )()
   {
     return hlt;
   }
+}
+
+//Store terminal input into ram
+void gatherInput()
+{
+	unsigned int input;
+	int i=0;
+	while(cin >> hex >> input) {
+		ram[ram_end] = input;
+		ram_end++;
+	}
 }
 
 int main()
