@@ -309,6 +309,9 @@ void srl()
 {
 	registerArray[rd] = (unsigned int )(registerArray[rt]) >> shift;
 	numAlu++;
+
+	cout << (pc - 1) << ": srl   - register r[" << rd << "]";
+	cout << " now contains " << hex << registerArray[rd];
 }
 
 //Subtract register rt from register rs and save the result into rd
@@ -316,6 +319,9 @@ void subu()
 {
 	registerArray[rd] = registerArray[rs]  - registerArray[rt];
 	numAlu++;
+
+	cout << (pc - 1) << ": subu  - register r[" << rd << "]";
+	cout << " now contains " << hex << registerArray[rd];
 }
 
 //Stores the word in r[t] at registerArray[registerArray[rs] + sign_imm
@@ -323,6 +329,9 @@ void sw()
 {
 	ram[registerArray[rs] + sign_ext] = registerArray[rt];
 	numStores++;
+
+	cout << (pc - 1) << ": sw    - register r[" << rt << "]";
+	cout << " value now stored in memory";
 }
 
 //Exclusive or's registerArray[rs] and registerArray[rt] then stores the result in registerArray[rd]
@@ -330,6 +339,9 @@ void _xor()
 {
 	registerArray[rd] = registerArray[rs] ^ registerArray[rt];
 	numAlu++;
+
+	cout << (pc - 1) << ": _xor  - register r[" << rd << "]";
+	cout << " now contains " << hex << registerArray[rd];
 }
 
 
@@ -338,6 +350,9 @@ void xori()
 {
 	registerArray[rt] = registerArray[rs] ^ sign_ext;
 	numAlu++;
+
+	cout << (pc - 1) << ": xori  - register r[" << rt << "]";
+	cout << " now contains " << hex << registerArray[rt];
 }
 
 
@@ -417,10 +432,6 @@ void (*imm_func())()
 	{
 		return xori;
 	}
-
-
-
-
 }
 
 void (*other_func())()
