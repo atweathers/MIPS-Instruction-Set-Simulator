@@ -108,11 +108,12 @@ void _and()
 //Branch is rs is equal to rt. Branches to immediate value.
 void beq()
 {
+	int print_pc = pc;
 	if (registerArray[rs] == registerArray[rt])
 	{
 		pc += sign_ext;
 		numTakenBranches++;
-		cout << setw(3) << setfill('0') << (pc - 1) << ": beq  - branch taken to " << hex << pc << endl;
+		cout << setw(3) << setfill('0') << (print_pc - 1) << ": beq  - branch taken to " << "0x" << hex << setw(8) << setfill('0') << pc << endl;
 	}
 	else
 	{
@@ -126,11 +127,12 @@ void beq()
 //Branch if r[rs] > 0 to the pc + signed immediate.
 void bgtz()
 {
+	int print_pc = pc;
 	if (int(registerArray[rs]) > 0)
 	{
 		pc += sign_ext;
 		numTakenBranches++;
-		cout << setw(3) << setfill('0') << (pc - 1) << ": bgtz  - branch taken to " << hex << pc << endl;
+		cout << setw(3) << setfill('0') << (print_pc - 1) << ": bgtz  - branch taken to " << "0x" << hex << setw(8) << setfill('0') << pc << endl;
 	}
 	else
 	{
@@ -142,11 +144,12 @@ void bgtz()
 //Branch if r[rs] <= 0 to the pc + signed immediate.
 void blez()
 {
+	int print_pc = pc;
 	if (int(registerArray[rs]) <= 0)
 	{
 		pc += sign_ext;
 		numTakenBranches++;
-		cout << setw(3) << setfill('0') << (pc - 1) << ": blez  - branch taken to " << hex << pc << endl;
+		cout << setw(3) << setfill('0') << (print_pc - 1) << ": blez  - branch taken to " << "0x" << hex << setw(8) << setfill('0') << pc << endl;
 
 	}
 	else
@@ -159,11 +162,12 @@ void blez()
 //Branch if registerArray[rs] is not equal to registerArray[rt], branch to pc + signed immediate.
 void bne()
 {
+	int print_pc = pc;
 	if (registerArray[rs] != registerArray[rt])
 	{
 		pc += sign_ext;
 		numTakenBranches++;
-		cout << setw(3) << setfill('0') << (pc - 1) << ": bne  - branch taken to " << hex << pc << endl;
+		cout << setw(3) << setfill('0') << (print_pc - 1) << ": bne  - branch taken to " << "0x" << hex << setw(8) << setfill('0') << pc << endl;
 
 	}
 	else
@@ -219,7 +223,7 @@ void jr()
 {
 	pc = registerArray[rs];
 	numJumps++;
-	cout << setw(3) << setfill('0') << (pc - 1) << ": jr     - jump to " << hex << pc << endl;
+	cout << setw(3) << setfill('0') << (pc - 1) << ": jr     - jump to " << "0x" << hex << setw(8) << setfill('0') << pc << endl;
 
 }
 
@@ -549,7 +553,7 @@ void printMemory()
 		if(ram[i] != INT_MAX)
 		{
 			cout << setw(3) << setfill('0') << i;
-			cout << ": " << hex << noshowbase << ram[i] << endl;
+			cout << ": " << setw(8) << setfill('0') << hex << noshowbase << ram[i] << endl;
 		}
 	}
 }
