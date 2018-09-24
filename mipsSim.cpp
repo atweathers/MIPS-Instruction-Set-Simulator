@@ -24,13 +24,13 @@ using namespace std;
 //funct: 6 bits
 unsigned int mar,
 			 mdr,
+			 pc,
  			 ir,
  			 rd,
  			 rs,
  			 rt,
  			 shift,
 			 funct,
-			 pc = 0,
 			 numAlu = 0,
 			 numInstFetch = 0,
 			 numLoads = 0,
@@ -43,8 +43,7 @@ unsigned int mar,
 			 registerArray[NUM_REGISTERS],
 			 ram[RAM_SIZE];
 
-int 	
-			 sign_ext,
+int sign_ext,
 			 ram_end = 0;
 
 
@@ -72,7 +71,7 @@ void addu()
 {
   registerArray[rd] = registerArray[rs] + registerArray[rt];
   numAlu++;
-  //cout << pc << ": addu - r[" << rd << "] now contains " << std::hex << registerArray[rd] << endl;
+  cout << (pc - 1) << ": addu  - regiseter r[" << rd << "] now contains " << std::hex << registerArray[rd] << endl;
 }
 
 //Adds the number in rs to the immediately given value, then stores in rt
@@ -80,7 +79,7 @@ void addiu()
 {
   registerArray[rt] = registerArray[rs] + sign_ext;
   numAlu++;
-  //  cout << pc << ": addu - r[" << rt << "] now contains " << std::hex << registerArray[rt] << std:dec << endl;
+   cout << (pc - 1) << ": addiu  - register r[" << rt << "] now contains " << std::hex << registerArray[rt] << endl;
 }
 
 //Performs bitwise AND operation rs*rt, then stores in rd
@@ -88,22 +87,27 @@ void _and()
 {
 	registerArray[rd] = registerArray[rs] & registerArray[rt];
 	numAlu++;
+	cout << (pc - 1) << ": and  - register r[" << rd << "] now contains " << hex << registerArray[rd] << endl;
 
 //Logically shifts register rt right by shift and stores the result in rd, fills with ones or zeroes depending on s
 }
 
 
 //Branch is rs is equal to rt. Branches to immediate value.
-void beq(){
+void beq()
+{
 	if (registerArray[rs] == registerArray[rt])
 	{
 		pc += sign_ext;
 		numTakenBranches++;
+		cout << (pc - 1) << ": beq  - branch taken to " << hex << pc << endl;
 	}
 	else
 	{
 		numUnTakenBranches++;
+		cout << (pc - 1) << ": beq  - branch untaken" << endl;
 	}
+
 
 }
 
@@ -114,10 +118,12 @@ void bgtz()
 	{
 		pc += sign_ext;
 		numTakenBranches++;
+		cout << (pc - 1) << ": bgtz  - branch taken to " << hex << pc << endl;
 	}
 	else
 	{
 		numUnTakenBranches++;
+		cout << (pc - 1) << ": bgtz  - branch untaken" << endl;
 	}
 }
 
@@ -128,10 +134,13 @@ void blez()
 	{
 		pc += sign_ext;
 		numTakenBranches++;
+		cout << (pc - 1) << ": blez  - branch taken to " << hex << pc << endl;
+
 	}
 	else
 	{
 		numUnTakenBranches++;
+		cout << (pc - 1) << ": blez  - branch untaken" << endl;
 	}
 }
 
@@ -142,16 +151,20 @@ void bne()
 	{
 		pc += sign_ext;
 		numTakenBranches++;
+		cout << (pc - 1) << ": bne  - branch taken to " << hex << pc << endl;
+
 	}
 	else
 	{
 		numUnTakenBranches++;
+		cout << (pc - 1) << ": bne  - branch untaken" << endl;
 	}
 }
 
 //Halts execution
 void hlt()
 {
+	cout << (pc - 1) << ": hlt" << endl;
   return;
 }
 
@@ -278,7 +291,7 @@ void srl()
 //Subtract register rt from register rs and save the result into rd
 void subu()
 {
-	registerArray[rd] = registerArray[rs] - registerArray[rt];
+	registerArray[rd] = registerArray[rs]  - registerArray[rt];
 	numAlu++;
 }
 
@@ -402,8 +415,51 @@ void (*other_func())()
     {
       return addu;
     }
-  }
-
+		if(funct == 0x24)
+		{
+			return _and;
+		}
+		if(funct == 0x09)
+		{
+			return jalr;
+		}
+		if(funct == 0x08)
+		{
+			return jr;
+		}
+		if(funct == 0x27)
+		{
+			return nor;
+		}
+		if(funct == 0x25)
+		{
+			return _or;
+		}
+		if(funct == 0x00)
+		{
+			return sll;
+		}
+		if(funct == 0x03)
+		{
+			return sra;
+		}
+		if(funct == 0x02)
+		{
+			return srl;
+		}
+		if(funct == 0x23)
+		{
+			return subu;
+		}
+		if(funct == 0x26)
+		{
+			return _xor;
+		}
+	}
+	if(opcode == 0x1c)
+	{
+	return mul;
+	}
 }
 
 
@@ -456,7 +512,32 @@ void printMemory()
 void writeOutput()
 {
 	printMemory();
+	int numJumpsAndBranches = numTakenBranches + numUnTakenBranches + numJumps + numJumpsAndLinks;
+	int numLoadsAndStores = numStores + numLoads;
+	int totalInstClassCounts = numAlu + numLoadsAndStores + numJumpsAndBranches;
+	int totalMemAccess = numLoadsAndStores + numInstFetch;
+
 	cout << "instruction class counts (omits hlt instruction)" << endl;
+	cout << "  alu ops             " << numAlu << endl;
+	cout << "  loads/stores        " << numLoadsAndStores << endl;
+	cout << "  jumps/branches      " << numJumpsAndBranches << endl;
+	cout << "total                 " << totalInstClassCounts << endl << endl;
+
+	cout << "memory access counts (omits hlt instruction)" << endl;
+	cout << "  inst. fetches       " << numInstFetch << endl;
+	cout << "  loads               " << numLoads << endl;
+	cout << "  stores              " << numStores << endl;
+	cout << "total                 " << totalMemAccess << endl << endl;
+
+	cout << "transfer of control counts" << endl;
+	cout << "  jumps               " << numJumps << endl;
+	cout << "  jump-and-links      " << numJumpsAndLinks << endl;
+	cout << "  taken branches      " << numTakenBranches << endl;
+	cout << "  untaken branches    " << numUnTakenBranches << endl;
+	cout << "total                 " << numJumpsAndBranches << endl;
+
+
+
 }
 
 
@@ -471,8 +552,6 @@ void gatherInput()
 		ram_end++;
 	}
 
-	//Echo to terminal 
-	printMemory();
 }
 
 int main()
