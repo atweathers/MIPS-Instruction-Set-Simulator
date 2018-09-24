@@ -112,6 +112,7 @@ void beq()
 	if (registerArray[rs] == registerArray[rt])
 	{
 		pc += sign_ext;
+		pc = pc & 0xffff;
 		numTakenBranches++;
 		cout << setw(3) << setfill('0') << (print_pc - 1) << ": beq  - branch taken to " << "0x" << hex << setw(8) << setfill('0') << pc << endl;
 	}
@@ -131,6 +132,7 @@ void bgtz()
 	if (int(registerArray[rs]) > 0)
 	{
 		pc += sign_ext;
+		pc = pc & 0xffff;
 		numTakenBranches++;
 		cout << setw(3) << setfill('0') << (print_pc - 1) << ": bgtz  - branch taken to " << "0x" << hex << setw(8) << setfill('0') << pc << endl;
 	}
@@ -148,6 +150,7 @@ void blez()
 	if (int(registerArray[rs]) <= 0)
 	{
 		pc += sign_ext;
+		pc = pc & 0xffff;
 		numTakenBranches++;
 		cout << setw(3) << setfill('0') << (print_pc - 1) << ": blez  - branch taken to " << "0x" << hex << setw(8) << setfill('0') << pc << endl;
 
@@ -167,6 +170,7 @@ void bne()
 	{
 		pc += sign_ext;
 		numTakenBranches++;
+		pc = pc & 0xffff;
 		cout << setw(3) << setfill('0') << (print_pc - 1) << ": bne  - branch taken to " << "0x" << hex << setw(8) << setfill('0') << pc << endl;
 
 	}
@@ -232,7 +236,7 @@ void jr()
 void lui()
 {
 	registerArray[rt] = sign_ext << 16;
-	numLoads++;
+	numAlu++;
 	cout << setw(3) << setfill('0') << (pc - 1) << ": lui   - register r[" << dec << rt << "] now contains " << "0x" << hex << setw(8) << setfill('0') << registerArray[rt] << endl;
 
 }
@@ -399,8 +403,8 @@ void (*imm_func())()
 {
   unsigned int opcode = (ir >> 26) & 0x3f; // clamp to 6-bit opcode field
   rs = (ir >> 21) & 0x1f; // clamp to the 5 bit rs
-  rt = (ir >> 16) & 0x1f; // clamp to the 5 bit rt
-  sign_ext = (ir) & 0xffff; // clamp to 16 bit immediate value
+  rt = (ir >> 16) & 0x001f; // clamp to the 5 bit rt
+  sign_ext = (ir) & 0x0000ffff; // clamp to 16 bit immediate value
 
   if(opcode == 0x09)
   {
@@ -561,6 +565,7 @@ void printMemory()
 void writeOutput()
 {
 	printMemory();
+	cout << dec;
 	int numJumpsAndBranches = numTakenBranches + numUnTakenBranches + numJumps + numJumpsAndLinks;
 	int numLoadsAndStores = numStores + numLoads;
 	int totalInstClassCounts = numAlu + numLoadsAndStores + numJumpsAndBranches;
