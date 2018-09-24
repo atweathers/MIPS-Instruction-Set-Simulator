@@ -173,6 +173,7 @@ void j()
 {
 	pc = sign_ext;
 	numJumps++;
+	cout << (pc - 1) << ": j     - jump to " << hex << pc << endl;
 }
 
 //Jump and link jumps, but also stores pc
@@ -182,6 +183,7 @@ void jal()
 	registerArray[31] = pc;
 	pc = sign_ext;
 	numJumpsAndLinks++;
+	cout << (pc - 1) << ": jal    - jump to " << hex << pc << "register r[31] now contains " << hex << registerArray[31] << endl;
 }
 
 //Store incremented pc in rd and jump to rs.
@@ -191,6 +193,8 @@ void jalr()
 	registerArray[rd] = pc;
 	pc = registerArray[rs];
 	numJumpsAndLinks++;
+	cout << (pc - 1) << ": jalr   - jump to " << hex << pc << "register r[" << rd << "] now contains " << hex << registerArray[rd] << endl;
+
 
 }
 
@@ -200,6 +204,8 @@ void jr()
 {
 	pc = registerArray[rs];
 	numJumps++;
+	cout << (pc - 1) << ": jr     - jump to " << hex << pc << endl;
+
 }
 
 //Shifts immediate value to the upper 16 bits with trailing 0's.
@@ -208,6 +214,8 @@ void lui()
 {
 	registerArray[rt] = sign_ext << 16;
 	numLoads++;
+	cout << (pc - 1) << ": lui   - register r[" << rt << "] now contains " << hex << registerArray[rt] << endl;
+
 }
 
 //Load value in rt from memory + any sign_ext which may apply
@@ -215,6 +223,8 @@ void lw()
 {
 	registerArray[rt] = ram[rs+sign_ext];
 	numLoads++;
+	cout << (pc - 1) << ": lw    - register r[" << rt << "] now contains " << hex << registerArray[rt] << endl;
+
 }
 
 //multiplies values in rs and rt and places the result into rd
@@ -222,6 +232,8 @@ void mul()
 {
 	registerArray[rd] = registerArray[rs]*registerArray[rt];
 	numAlu++;
+	cout << (pc - 1) << ": mul   - register r[" << rd << "] now contains " << hex << registerArray[rd] << endl;
+
 }
 
 //nor's register rs and rt and places the result into rd
@@ -229,6 +241,8 @@ void nor()
 {
 	registerArray[rd] = !(registerArray[rs] | registerArray[rt]);
 	numAlu++;
+	cout << (pc - 1) << ": nor   - register r[" << rd << "] now contains " << hex << registerArray[rd] << endl;
+
 }
 
 //or's register rs and register rt and places the result into rd
@@ -236,6 +250,8 @@ void _or()
 {
 	registerArray[rd] = registerArray[rs] | registerArray[rt];
 	numAlu++;
+	cout << (pc - 1) << ": or    - register r[" << rd << "] now contains " << hex << registerArray[rd] << endl;
+
 }
 
 //Shifts register rt left logically by shift and stores the result in rd
@@ -250,6 +266,8 @@ void sll()
 {
 	registerArray[rd] = registerArray[rt] << shift;
 	numAlu++;
+	cout << (pc - 1) << ": sll    - register r[" << rd << "] now contains " << hex << registerArray[rd] << endl;
+
 }
 
 //If register rs < sign_ext, then set register rt to 1 else set to 0
@@ -264,6 +282,8 @@ void stli()
 		registerArray[rd] = 0;
 	}
 	numAlu++;
+	cout << (pc - 1) << ": stli  - register r[" << rd << "] now contains " << hex << registerArray[rd] << endl;
+
 }
 
 
@@ -275,6 +295,8 @@ void sra()
 {
 	registerArray[rd] = registerArray[rt] >> shift;
 	numAlu++;
+	cout << (pc - 1) << ": sra   - register r[" << rd << "] now contains " << hex << registerArray[rd] << endl;
+
 }
 
 
