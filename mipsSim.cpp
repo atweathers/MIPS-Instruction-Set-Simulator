@@ -164,6 +164,7 @@ void bne()
 //Halts execution
 void hlt()
 {
+	halt = 1;
 	cout << (pc - 1) << ": hlt" << endl;
   return;
 }
@@ -590,14 +591,6 @@ int main()
 		(*inst)();
 	}
 	writeOutput();
-
-
-  registerArray[0] = 1;
-  registerArray[2] = 3;
-  registerArray[3] = 4;
-  registerArray[1] = 2;
-
-
 
   return 0;
 }
