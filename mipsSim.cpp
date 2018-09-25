@@ -91,7 +91,7 @@ void addiu()
 {
   registerArray[rt] = registerArray[rs] + sign_ext;
   numAlu++;
-   cout << setw(3) << setfill('0') << (pc - 1) << ": addiu  - register r[" << dec << rt << "] now contains " << "0x" << hex << setw(8) << setfill('0') << registerArray[rt] << endl;
+   cout << setw(3) << setfill('0') << (pc - 1) << ": addiu - register r[" << dec << rt << "] now contains " << "0x" << hex << setw(8) << setfill('0') << registerArray[rt] << endl;
 }
 
 //Performs bitwise AND operation rs*rt, then stores in rd
@@ -99,7 +99,7 @@ void _and()
 {
 	registerArray[rd] = registerArray[rs] & registerArray[rt];
 	numAlu++;
-	cout << setw(3) << setfill('0') << (pc - 1) << ": and  - register r[" << dec << rd << "] now contains " << "0x" << hex << setw(8) << setfill('0') << registerArray[rd] << endl;
+	cout << setw(3) << setfill('0') << (pc - 1) << ": and   - register r[" << dec << rd << "] now contains " << "0x" << hex << setw(8) << setfill('0') << registerArray[rd] << endl;
 
 //Logically shifts register rt right by shift and stores the result in rd, fills with ones or zeroes depending on s
 }
@@ -114,12 +114,12 @@ void beq()
 		pc += sign_ext;
 		pc = pc & 0xffff;
 		numTakenBranches++;
-		cout << setw(3) << setfill('0') << (print_pc - 1) << ": beq  - branch taken to " << "0x" << hex << setw(8) << setfill('0') << pc << endl;
+		cout << setw(3) << setfill('0') << (print_pc - 1) << ": beq   - branch taken to " << "0x" << hex << setw(8) << setfill('0') << pc << endl;
 	}
 	else
 	{
 		numUnTakenBranches++;
-		cout << setw(3) << setfill('0') << (pc - 1) << ": beq  - branch untaken" << endl;
+		cout << setw(3) << setfill('0') << (pc - 1) << ": beq   - branch untaken" << endl;
 	}
 
 
@@ -206,7 +206,7 @@ void jal()
 	registerArray[31] = pc;
 	pc = sign_ext;
 	numJumpsAndLinks++;
-	cout << setw(3) << setfill('0') << (pc - 1) << ": jal    - jump to " << hex << pc << "register r[31] now contains " << "0x" << hex << setw(8) << setfill('0') << registerArray[31] << endl;
+	cout << setw(3) << setfill('0') << (pc - 1) << ": jal   - jump to " << hex << pc << "register r[31] now contains " << "0x" << hex << setw(8) << setfill('0') << registerArray[31] << endl;
 }
 
 //Store incremented pc in rd and jump to rs.
@@ -216,7 +216,7 @@ void jalr()
 	registerArray[rd] = pc;
 	pc = registerArray[rs];
 	numJumpsAndLinks++;
-	cout << setw(3) << setfill('0') << (pc - 1) << ": jalr   - jump to " << hex << pc << "register r[" << dec << rd << "] now contains " << "0x" << hex << setw(8) << setfill('0') << registerArray[rd] << endl;
+	cout << setw(3) << setfill('0') << (pc - 1) << ": jalr  - jump to " << hex << pc << "register r[" << dec << rd << "] now contains " << "0x" << hex << setw(8) << setfill('0') << registerArray[rd] << endl;
 
 
 }
@@ -227,7 +227,7 @@ void jr()
 {
 	pc = registerArray[rs];
 	numJumps++;
-	cout << setw(3) << setfill('0') << (pc - 1) << ": jr     - jump to " << "0x" << hex << setw(8) << setfill('0') << pc << endl;
+	cout << setw(3) << setfill('0') << (pc - 1) << ": jr    - jump to " << "0x" << hex << setw(8) << setfill('0') << pc << endl;
 
 }
 
@@ -289,7 +289,7 @@ void sll()
 {
 	registerArray[rd] = registerArray[rt] << shift;
 	numAlu++;
-	cout << setw(3) << setfill('0') << (pc - 1) << ": sll    - register r[" << dec << rd << "] now contains " << "0x" << hex << setw(8) << setfill('0') << registerArray[rd] << endl;
+	cout << setw(3) << setfill('0') << (pc - 1) << ": sll   - register r[" << dec << rd << "] now contains " << "0x" << hex << setw(8) << setfill('0') << registerArray[rd] << endl;
 
 }
 
@@ -362,7 +362,7 @@ void _xor()
 	registerArray[rd] = registerArray[rs] ^ registerArray[rt];
 	numAlu++;
 
-	cout << setw(3) << setfill('0') << (pc - 1) << ": _xor  - register r[" << dec << rd << "]";
+	cout << setw(3) << setfill('0') << (pc - 1) << ": xor    - register r[" << dec << rd << "]";
 	cout << " now contains " << "0x" << hex << setw(8) << setfill('0') << registerArray[rd] << endl;
 }
 
@@ -373,7 +373,7 @@ void xori()
 	registerArray[rt] = registerArray[rs] ^ sign_ext;
 	numAlu++;
 
-	cout << setw(3) << setfill('0') << (pc - 1) << ": xori  - register r[" << dec << rt << "]";
+	cout << setw(3) << setfill('0') << (pc - 1) << ": xori    - register r[" << dec << rt << "]";
 	cout << " now contains " << "0x" << hex << setw(8) << setfill('0') << registerArray[rt] << endl;
 }
 
