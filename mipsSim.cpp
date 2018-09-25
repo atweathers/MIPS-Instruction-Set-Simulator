@@ -43,7 +43,7 @@ unsigned int mar,
 			 registerArray[NUM_REGISTERS],
 			 ram[RAM_SIZE];
 
-int sign_ext,
+int 		 sign_ext,
 			 ram_end = 0;
 
 
@@ -61,8 +61,8 @@ void initiliazeRam()
 
 void fillMap()
 {
-  opcodeMap[0x00] = "r";
-  opcodeMap[0x09] = "i";
+ 	opcodeMap[0x00] = "r";
+    opcodeMap[0x09] = "i";
 	opcodeMap[0x04] = "i";
 	opcodeMap[0x07] = "i";
 	opcodeMap[0x06] = "i";
