@@ -1,5 +1,5 @@
 # MIPS-Instruction-Set-Simulator
-This c program emulates a MIPS-like instruction set with the following simplifications: 
+This c++ program emulates a MIPS-like instruction set with the following simplifications: 
   32-bit memory words with word addressability;
   a limited memory size of 1024 words;
   branch offsets and targets are not shifted before use;
