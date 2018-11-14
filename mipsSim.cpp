@@ -43,7 +43,7 @@ unsigned int mar,
 			 registerArray[NUM_REGISTERS],
 			 ram[RAM_SIZE];
 
-int 		 sign_ext,
+int 	 sign_ext,
 			 ram_end = 0;
 
 bool zeroAttempt = false;
@@ -77,6 +77,10 @@ void fillMap()
 	opcodeMap[0x0e] = "i";
 }
 
+void checkRegZero(unsigned int reg){
+	if(reg == 0)
+		zeroAttempt=true;
+}
 
 //Adds the number in rs to the number in rt, then stores in rd
 void addu()
@@ -84,7 +88,9 @@ void addu()
 	checkRegZero(rd);
   registerArray[rd] = registerArray[rs] + registerArray[rt];
   numAlu++;
-  cout << setw(3) << setfill('0') << hex << (pc - 1) << ": addu  - register r[" << rd << "] now contains " << "0x" << hex << setw(8) << setfill('0') << registerArray[rd] << "\r\n";
+  cout << setw(3) << setfill('0') << hex << (pc - 1) << ": addu  - register r[";
+	cout << rd << "] now contains " << "0x" << hex << setw(8) << setfill('0');
+	cout << registerArray[rd] << "\r\n";
 }
 
 //Adds the number in rs to the immediately given value, then stores in rt
@@ -93,7 +99,9 @@ void addiu()
 	checkRegZero(rt);
   registerArray[rt] = registerArray[rs] + sign_ext;
   numAlu++;
-   cout << setw(3) << setfill('0') << hex << (pc - 1) << ": addiu - register r[" << rt << "] now contains " << "0x" << hex << setw(8) << setfill('0') << registerArray[rt] << "\r\n";
+   cout << setw(3) << setfill('0') << hex << (pc - 1) << ": addiu - register r["
+	 cout << rt << "] now contains " << "0x" << hex << setw(8) << setfill('0')
+	 cout << registerArray[rt] << "\r\n";
 }
 
 //Performs bitwise AND operation rs*rt, then stores in rd
@@ -102,7 +110,10 @@ void _and()
 	checkRegZero(rd);
 	registerArray[rd] = registerArray[rs] & registerArray[rt];
 	numAlu++;
-	cout << setw(3) << setfill('0') << hex << (pc - 1) << ": and   - register r[" << rd << "] now contains " << "0x" << hex << setw(8) << setfill('0') << registerArray[rd] << "\r\n";
+	cout << setw(3) << setfill('0') << hex << (pc - 1) << ": and   - register r["
+	cout << rd << "] now contains " << "0x" << hex << setw(8) << setfill('0') << registerArray[rd] << "\r\n";
+
+//Logically shifts register rt right by shift and stores the result in rd, fills with ones or zeroes depending on s
 }
 
 
@@ -661,6 +672,12 @@ int main()
 		fetch();
 		inst = decode();
 		(*inst)();
+		if(zeroAttempt)
+		{
+			zeroAttempt = false;
+			cout << "***** - register r[0] not allowed to change; reset to 0\n";
+			registerArray[0] = 0;
+		}
 	}
 	writeOutput();
 
