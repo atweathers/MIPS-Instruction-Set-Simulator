@@ -675,7 +675,7 @@ int main()
 		if(zeroAttempt)
 		{
 			zeroAttempt = false;
-			cout << "***** - register r[0] not allowed to change; reset to 0\n";
+			cout << "***** - register r[0] not allowed to change; reset to 0\r\n";
 			registerArray[0] = 0;
 		}
 	}
