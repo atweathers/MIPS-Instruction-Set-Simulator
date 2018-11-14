@@ -100,8 +100,6 @@ void _and()
 	registerArray[rd] = registerArray[rs] & registerArray[rt];
 	numAlu++;
 	cout << setw(3) << setfill('0') << hex << (pc - 1) << ": and   - register r[" << rd << "] now contains " << "0x" << hex << setw(8) << setfill('0') << registerArray[rd] << "\r\n";
-
-//Logically shifts register rt right by shift and stores the result in rd, fills with ones or zeroes depending on s
 }
 
 
