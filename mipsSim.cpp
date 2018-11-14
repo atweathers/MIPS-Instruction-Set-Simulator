@@ -46,7 +46,7 @@ unsigned int mar,
 int 	 sign_ext,
 			 ram_end = 0;
 
-
+bool   zeroAttempt=false;
 
 map<unsigned int, string> opcodeMap;
 
@@ -95,8 +95,8 @@ void addu(){
 void addiu(){
   registerArray[rt] = registerArray[rs] + sign_ext;
   numAlu++;
-   cout << setw(3) << setfill('0') << hex << (pc - 1) << ": addiu - register r["
-	 cout << rt << "] now contains " << "0x" << hex << setw(8) << setfill('0')
+   cout << setw(3) << setfill('0') << hex << (pc - 1) << ": addiu - register r[";
+	 cout << rt << "] now contains " << "0x" << hex << setw(8) << setfill('0');
 	 cout << registerArray[rt] << "\r\n";
 }
 
@@ -104,7 +104,7 @@ void addiu(){
 void _and(){
 	registerArray[rd] = registerArray[rs] & registerArray[rt];
 	numAlu++;
-	cout << setw(3) << setfill('0') << hex << (pc - 1) << ": and   - register r["
+	cout << setw(3) << setfill('0') << hex << (pc - 1) << ": and   - register r[";
 	cout << rd << "] now contains " << "0x" << hex << setw(8) << setfill('0') << registerArray[rd] << "\r\n";
 
 //Logically shifts register rt right by shift and stores the result in rd, fills with ones or zeroes depending on s
