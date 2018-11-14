@@ -43,7 +43,7 @@ unsigned int mar,
 			 registerArray[NUM_REGISTERS],
 			 ram[RAM_SIZE];
 
-int 		 sign_ext,
+int 	 sign_ext,
 			 ram_end = 0;
 
 
@@ -77,29 +77,37 @@ void fillMap()
 	opcodeMap[0x0e] = "i";
 }
 
+void checkRegZero(unsigned int reg){
+	if(reg == 0)
+		zeroAttempt=true;
+}
 
 //Adds the number in rs to the number in rt, then stores in rd
-void addu()
-{
+void addu(){
   registerArray[rd] = registerArray[rs] + registerArray[rt];
   numAlu++;
-  cout << setw(3) << setfill('0') << hex << (pc - 1) << ": addu  - register r[" << rd << "] now contains " << "0x" << hex << setw(8) << setfill('0') << registerArray[rd] << "\r\n";
+  cout << setw(3) << setfill('0') << hex << (pc - 1) << ": addu  - register r[";
+	cout << rd << "] now contains " << "0x" << hex << setw(8) << setfill('0');
+	cout << registerArray[rd] << "\r\n";
 }
 
 //Adds the number in rs to the immediately given value, then stores in rt
-void addiu()
-{
+void addiu(){
   registerArray[rt] = registerArray[rs] + sign_ext;
   numAlu++;
-   cout << setw(3) << setfill('0') << hex << (pc - 1) << ": addiu - register r[" << rt << "] now contains " << "0x" << hex << setw(8) << setfill('0') << registerArray[rt] << "\r\n";
+   cout << setw(3) << setfill('0') << hex << (pc - 1) << ": addiu - register r["
+	 cout << rt << "] now contains " << "0x" << hex << setw(8) << setfill('0')
+	 cout << registerArray[rt] << "\r\n";
 }
 
 //Performs bitwise AND operation rs*rt, then stores in rd
-void _and()
-{
+void _and(){
 	registerArray[rd] = registerArray[rs] & registerArray[rt];
 	numAlu++;
-	cout << setw(3) << setfill('0') << hex << (pc - 1) << ": and   - register r[" << rd << "] now contains " << "0x" << hex << setw(8) << setfill('0') << registerArray[rd] << "\r\n";
+	cout << setw(3) << setfill('0') << hex << (pc - 1) << ": and   - register r["
+	cout << rd << "] now contains " << "0x" << hex << setw(8) << setfill('0') << registerArray[rd] << "\r\n";
+
+//Logically shifts register rt right by shift and stores the result in rd, fills with ones or zeroes depending on s
 }
 
 
